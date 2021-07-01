@@ -216,12 +216,11 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
     .digest('hex');
 
   // const hashedToken = req.params.token;
-  console.log('$$', hashedToken);
 
   const user = await User.findOne({
     confirmEmailToken: hashedToken,
   });
-  console.log('uu', user);
+
   if (!user)
     return next(new AppError('Provided confirmation token invalid!', 400));
   user.active = true;

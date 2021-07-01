@@ -27,7 +27,6 @@ const handleJWTError = (err) => {
 const handleJWTExpired = (err) => new AppError('Token expired!', 401);
 
 const sendErrorDev = (err, req, res) => {
-  console.log(req.body);
   // API
   if (req.originalUrl.startsWith('/api')) {
     res.status(err.statusCode).json({

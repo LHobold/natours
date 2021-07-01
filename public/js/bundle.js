@@ -27185,7 +27185,7 @@ var login = exports.login = function () {
             _context.next = 3;
             return (0, _axios2.default)({
               method: 'POST',
-              url: 'http://127.0.0.1:8000/api/v1/users/login',
+              url: '/api/v1/users/login',
               data: {
                 email: email,
                 password: password
@@ -27235,7 +27235,7 @@ var logout = exports.logout = function () {
             _context2.next = 3;
             return (0, _axios2.default)({
               method: 'GET',
-              url: 'http://127.0.0.1:8000/api/v1/users/logout'
+              url: '/api/v1/users/logout'
             });
 
           case 3:
@@ -27299,7 +27299,7 @@ var updateSettings = exports.updateSettings = function () {
             _context.next = 3;
             return (0, _axios2.default)({
               method: 'PATCH',
-              url: 'http://127.0.0.1:8000/api/v1/users/updateMe',
+              url: '/api/v1/users/updateMe',
               data: data
             });
 
@@ -27361,7 +27361,7 @@ var changePassword = exports.changePassword = function () {
             _context.next = 3;
             return (0, _axios2.default)({
               method: 'PATCH',
-              url: 'http://127.0.0.1:8000/api/v1/users/changePassword',
+              url: '/api/v1/users/changePassword',
               data: {
                 currentPassword: currentPassword,
                 newPassword: newPassword,
@@ -27430,7 +27430,7 @@ var forgotPassword = exports.forgotPassword = function () {
             _context.next = 3;
             return (0, _axios2.default)({
               method: 'POST',
-              url: 'http://127.0.0.1:8000/api/v1/users/forgotPassword',
+              url: '/api/v1/users/forgotPassword',
               data: {
                 email: email
               }
@@ -27479,7 +27479,7 @@ var resetPassword = exports.resetPassword = function () {
             _context2.next = 3;
             return (0, _axios2.default)({
               method: 'PATCH',
-              url: 'http://127.0.0.1:8000/api/v1/users/resetPassword/' + token,
+              url: '/api/v1/users/resetPassword/' + token,
               data: {
                 password: password,
                 confirmPassword: confirmPassword
@@ -27547,7 +27547,7 @@ var signUp = exports.signUp = function () {
             _context.next = 3;
             return (0, _axios2.default)({
               method: 'POST',
-              url: 'http://127.0.0.1:8000/api/v1/users/signup',
+              url: '/api/v1/users/signup',
               data: {
                 name: name,
                 email: email,
@@ -27566,7 +27566,7 @@ var signUp = exports.signUp = function () {
                 location.assign('/');
               }, 1000);
             }
-            _context.next = 11;
+            _context.next = 10;
             break;
 
           case 7:
@@ -27574,9 +27574,8 @@ var signUp = exports.signUp = function () {
             _context.t0 = _context['catch'](0);
 
             (0, _alerts.showAlert)('error', _context.t0.response.data.message);
-            console.log(_context.t0);
 
-          case 11:
+          case 10:
           case 'end':
             return _context.stop();
         }
@@ -27618,7 +27617,7 @@ var activateAccount = exports.activateAccount = function () {
             _context.next = 3;
             return (0, _axios2.default)({
               method: 'POST',
-              url: 'http://127.0.0.1:8000/api/v1/users/confirm/' + token,
+              url: '/api/v1/users/confirm/' + token,
               data: {}
             });
 
@@ -27683,7 +27682,7 @@ var bookTour = exports.bookTour = function () {
             // get checkout session
 
             _context.next = 4;
-            return (0, _axios2.default)('http://127.0.0.1:8000/api/v1/bookings/checkout-session/' + tourId);
+            return (0, _axios2.default)('/api/v1/bookings/checkout-session/' + tourId);
 
           case 4:
             session = _context.sent;
@@ -27691,17 +27690,16 @@ var bookTour = exports.bookTour = function () {
             return stripe.redirectToCheckout({ sessionId: session.data.session.id });
 
           case 7:
-            _context.next = 13;
+            _context.next = 12;
             break;
 
           case 9:
             _context.prev = 9;
             _context.t0 = _context['catch'](0);
 
-            console.log(_context.t0);
             (0, _alerts.showAlert)('error', _context.t0);
 
-          case 13:
+          case 12:
           case 'end':
             return _context.stop();
         }

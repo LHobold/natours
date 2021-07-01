@@ -96,8 +96,6 @@ exports.getConfirmPage = catchAsync(async (req, res, next) => {
     .update(req.params.token)
     .digest('hex');
 
-  console.log('##', hashedToken);
-
   const user = await User.find({
     confirmEmailToken: hashedToken,
   });
@@ -113,6 +111,5 @@ exports.getMyBookings = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: user.id });
   const tourIDs = bookings.map((el) => el.tour);
   const tours = await Tour.find({ _id: { $in: tourIDs } });
-  console.log(tours);
   res.status(200).render('overview', { title: 'My booked tours', tours });
 });
