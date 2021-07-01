@@ -1,0 +1,21 @@
+extends base
+
+block content 
+    .user-view__content
+      .user-view__form-container
+        h2.heading-secondary.ma-bt-md Create an account now on Natours!
+        form.form.form-signup
+          .form__group
+            label.form__label(for='name') Name
+            input#name.form__input(type='text', placeholder='', required, minlength='5', maxlength='30')
+          .form__group.ma-bt-md
+            label.form__label(for='email') Email
+            input#email.form__input(type='email', placeholder='', required, )
+          .form__group.ma-bt-md
+            label.form__label(for='password') Password
+            input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          .form__group.ma-bt-md
+            label.form__label(for='confirmPassword') Confirm your password
+            input#confirmPassword.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          .form__group.right
+            button.btn.btn--small.btn--green.btn--save-settings Sign up       
