@@ -7,9 +7,16 @@ const AppError = require('../utils/appError');
 const crypto = require('crypto');
 
 exports.getOverview = catchAsync(async (req, res, next) => {
-  // 1) Get tour data from collection
-  const tours = await Tour.find();
-  // 2) Build template
+  let tours = await Tour.find();
+
+  if (req.user) {
+    // 1) Check if user has any booked tours, and if there is, don't show those in the overview
+    const user = req.user;
+    const userBookings = await Booking.find({ user: user.id });
+    const bookedToursIds = userBookings.map((el) => el.tour.id);
+    // 2) Get tour data from collection
+    tours = await Tour.find({ _id: { $nin: bookedToursIds } });
+  }
 
   // 3) Render template using tour data
 
