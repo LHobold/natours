@@ -17,7 +17,11 @@ router.get(
   bookingsController.createBookingCheckout,
   viewController.getOverview
 );
-router.get('/tour/:tourSlug', viewController.getTourDetails);
+router.get(
+  '/tour/:tourSlug',
+  bookingsController.tourIsBooked,
+  viewController.getTourDetails
+);
 router.get('/login', viewController.loginForm);
 router.get('/forgotPassword', viewController.getForgotPasswordPage);
 router.get('/signup', viewController.getSignupPage);
