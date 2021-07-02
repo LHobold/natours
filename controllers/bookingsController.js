@@ -35,9 +35,10 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
 exports.tourIsBooked = catchAsync(async (req, res, next) => {
   const user = req.user;
+  if (!user) return next();
+
   const bookings = await Booking.find({ user: user.id });
   const bookingsIds = bookings.map((el) => el.tour.id);
-  // console.log(bookings.map((b) => b.createdAt));
   const tour = await Tour.findOne({ slug: req.params.tourSlug });
   const tourIsOver = tour.startDates[0] < Date.now();
   const booked = bookingsIds.includes(String(tour._id));

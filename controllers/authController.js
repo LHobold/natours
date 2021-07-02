@@ -11,19 +11,16 @@ const signToken = (id) =>
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-const createSendToken = catchAsync(async (user, statusCode, res) => {
+const createSendToken = (user, statusCode, res, req) => {
   const token = signToken(user._id);
-
-  await User.findByIdAndUpdate(user._id, { token });
 
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   };
-
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -34,7 +31,7 @@ const createSendToken = catchAsync(async (user, statusCode, res) => {
     token,
     data: { user },
   });
-});
+};
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
@@ -55,7 +52,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     status: 'sucess',
     data: { newUser },
   });
-  // createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -76,7 +72,8 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Incorrect email or password', 401));
   // If everything is ok, send token to client
-  createSendToken(sendUser, 200, res);
+
+  createSendToken(sendUser, 200, res, req);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -212,7 +209,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.save({ validateBeforeSave: true });
 
   // Log the user in
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, res, req);
 });
 
 exports.confirmEmail = catchAsync(async (req, res, next) => {
@@ -232,7 +229,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
   user.active = true;
   user.confirmEmailToken = undefined;
   user.save({ validateBeforeSave: false });
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, res, req);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -254,7 +251,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.confirmPassword = req.body.confirmPassword;
   await user.save();
   // Log user in - send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, res, req);
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
