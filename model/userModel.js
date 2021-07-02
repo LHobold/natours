@@ -54,13 +54,8 @@ const userSchema = new mongoose.Schema({
 
 /////////////////////////////////////////////////////
 ///////////////////MIDDLEWARES///////////////////////
-userSchema.pre(/^find/, async function (next) {
-  this.find({ active: { $ne: false } });
-  next();
-});
-
 // userSchema.pre(/^find/, async function (next) {
-//   this.populate({ path: 'reviews' });
+//   this.find({ active: { $ne: false } });
 //   next();
 // });
 

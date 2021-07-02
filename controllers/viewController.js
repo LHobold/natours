@@ -67,8 +67,8 @@ exports.getResetPasswordPage = catchAsync(async (req, res, next) => {
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gte: Date.now() },
-  });
-  if (!user)
+  }).select('+active');
+  if (!user || !user.active)
     return next(new AppError('Provided token invalid or expired!', 400));
 
   res.status(200).render('resetPassword', {
