@@ -805,6 +805,21 @@ body {
   flex: 1;
   padding: 7rem 0;
 }
+
+.user-view-tours {
+  background-color: #fff;
+  max-width: 140rem;
+  margin: 0 auto;
+  min-height: 100vh;
+  border-radius: 3px;
+  overflow: hidden;
+  -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .user-view__form-container {
   max-width: 68rem;
   margin: 0 auto;

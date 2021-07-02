@@ -1,0 +1,34 @@
+mixin link(description,icon,active,link)
+  li(class=`${active ? 'side-nav--active': ''}`)
+    a(href=link)
+      svg
+       use(xlink:href=`img/icons.svg#icon-${icon}`)
+      |  #{description}
+
+mixin accNav(active)
+    - const settings = active==='settings'?true:false
+    - const bookings = active==='bookings'?true:false
+    - const reviews = active==='reviews'?true:false
+    - const billings = active==='billings'?true:false
+    - const mTours = active==='mTours'?true:false
+    - const mUsers = active==='mUsers'?true:false
+    - const mReviews = active==='mReviews'?true:false
+    - const mBookings = active==='mBookings'?true:false
+    main.main
+      .user-view-tours
+        nav.user-view__menu
+          ul.side-nav
+            +link('settings','settings',settings,'/me')
+            +link('My bookings','briefcase',bookings ,'/my-tours')
+            +link('My reviews','star',reviews,'/my-reviews')
+            +link('Billing','credit-card',billings,'#')
+          -if (user.role === 'admin')
+            .admin-nav
+              h5.admin-nav__heading Admin
+              ul.side-nav
+                +link('Manage tours','map',mTours,'#')
+                +link('Manage users','users',mUsers,'#')
+                +link('Manage reviews','star',mReviews,'#')
+                +link('Manage bookings','briefcase',mBookings,'#')
+        .user-view__content
+            block
