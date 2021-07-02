@@ -11,6 +11,7 @@ router.get('/confirm/:token', viewController.getConfirmPage);
 
 router.use(authController.isLoggedIn);
 router.get('/my-tours', authController.protect, viewController.getMyBookings);
+router.get('/my-reviews', authController.protect, viewController.getMyReviews);
 router.get(
   '/',
   bookingsController.createBookingCheckout,

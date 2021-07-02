@@ -1094,6 +1094,14 @@ body {
   grid-gap: 7rem;
 }
 
+.card-container-account {
+  max-width: 120rem;
+  margin: 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 7rem;
+}
+
 .card {
   border-radius: 3px;
   overflow: hidden;
@@ -1215,6 +1223,17 @@ body {
   max-width: 80rem;
   text-align: center;
 }
+
+.error-account {
+  position: relative;
+  top: 35%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  max-width: 80rem;
+  text-align: center;
+}
+
 .error__title {
   display: -webkit-box;
   display: -ms-flexbox;
