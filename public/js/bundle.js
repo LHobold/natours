@@ -27908,7 +27908,7 @@ if (signupForm) signupForm.addEventListener('submit', function () {
 }());
 
 if (confirmEmail) {
-  var token = window.location.pathname.split('/')[2];
+  var token = confirmEmail.dataset.token;
   (0, _confirmEmail.activateAccount)(token);
 }
 

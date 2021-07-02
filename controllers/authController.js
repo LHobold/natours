@@ -228,7 +228,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
     return next(new AppError('Provided confirmation token invalid!', 400));
   user.active = true;
   user.confirmEmailToken = undefined;
-  user.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false });
   createSendToken(user, 200, res, req);
 });
 

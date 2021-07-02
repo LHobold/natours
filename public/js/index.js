@@ -119,7 +119,7 @@ if (signupForm)
   });
 
 if (confirmEmail) {
-  const token = window.location.pathname.split('/')[2];
+  const token = confirmEmail.dataset.token;
   activateAccount(token);
 }
 

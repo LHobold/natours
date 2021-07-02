@@ -111,7 +111,9 @@ exports.getConfirmPage = catchAsync(async (req, res, next) => {
   if (!user)
     return next(new AppError('Provided confirmation token invalid!', 400));
 
-  res.status(200).render('confirm', { title: 'Email confirm' });
+  res
+    .status(200)
+    .render('confirm', { title: 'Email confirm', token: req.params.token });
 });
 
 exports.getMyBookings = catchAsync(async (req, res, next) => {
