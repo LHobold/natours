@@ -29,7 +29,7 @@ mongoose
 ////////////////////////////////// SERVER //////////////////////////////
 
 const PORT = process.env.PORT || 8000;
-const server = app.listen(PORT, '127.0.0.1', () => {
+const server = app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log('Server online at port ', PORT);
 });
