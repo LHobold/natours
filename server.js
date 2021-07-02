@@ -28,10 +28,10 @@ mongoose
 
 ////////////////////////////////// SERVER //////////////////////////////
 
-const port = process.env.PORT || 8000;
-const server = app.listen(port, '127.0.0.1', () => {
+const PORT = process.env.PORT || 8000;
+const server = app.listen(PORT, '127.0.0.1', () => {
   // eslint-disable-next-line no-console
-  console.log('Server online at port ', port);
+  console.log('Server online at port ', PORT);
 });
 
 process.on('unhandledRejection', (err) => {
