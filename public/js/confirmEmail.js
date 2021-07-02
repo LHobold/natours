@@ -5,8 +5,10 @@ export const activateAccount = async (token) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: `/api/v1/users/confirm/${token}`,
-      data: {},
+      url: `/api/v1/users/confirm`,
+      data: {
+        token,
+      },
     });
 
     if (res.data.status === 'sucess') {

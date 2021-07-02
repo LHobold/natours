@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
   confirmEmailToken: String,
-  active: { type: Boolean, default: true, select: false },
+  active: { type: Boolean, default: false, select: false },
 });
 
 /////////////////////////////////////////////////////

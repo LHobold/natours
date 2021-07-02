@@ -96,7 +96,7 @@ exports.getConfirmPage = catchAsync(async (req, res, next) => {
     .update(req.params.token)
     .digest('hex');
 
-  const user = await User.find({
+  const user = await User.findOne({
     confirmEmailToken: hashedToken,
   });
 

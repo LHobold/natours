@@ -46,16 +46,16 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt,
     role: req.body.role,
   });
-
+  const token = newUser.createConfirmAccountToken();
   newUser.save({ validateBeforeSave: false });
-  const url = `${req.protocol}://${req.get('host')}/me`;
+  const url = `${req.protocol}://${req.get('host')}/confirm/${token}`;
   await new Email(newUser, url).sendWelcome();
 
-  // res.status(201).json({
-  //   status: 'sucess',
-  //   data: { newUser },
-  // });
-  createSendToken(newUser, 201, res);
+  res.status(201).json({
+    status: 'sucess',
+    data: { newUser },
+  });
+  // createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -68,7 +68,8 @@ exports.login = catchAsync(async (req, res, next) => {
   // Check if the user exist && password is correct
   const user = await User.findOne({ email }).select('+password +active');
 
-  if (!user.active) return next(new AppError('Incorrect email or password'));
+  if (user.confirmEmailToken)
+    return next(new AppError('Please confirm your account in your email!'));
 
   const sendUser = await User.findOne({ email });
 
@@ -216,7 +217,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 exports.confirmEmail = catchAsync(async (req, res, next) => {
   const hashedToken = crypto
     .createHash('sha256')
-    .update(req.params.token)
+    .update(req.body.token)
     .digest('hex');
 
   // const hashedToken = req.params.token;
@@ -229,7 +230,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
     return next(new AppError('Provided confirmation token invalid!', 400));
   user.active = true;
   user.confirmEmailToken = undefined;
-  user.save({ validateBeforeSave: true });
+  user.save({ validateBeforeSave: false });
   createSendToken(user, 200, res);
 });
 

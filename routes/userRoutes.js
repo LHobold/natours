@@ -12,7 +12,7 @@ router.post('/login', authController.login);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 router.get('/logout', authController.logout);
-router.post('/confirm/:token', authController.confirmEmail);
+router.post('/confirm', authController.confirmEmail);
 
 // USER Routes
 router.use(authController.protect);
