@@ -41,10 +41,15 @@ exports.tourIsBooked = catchAsync(async (req, res, next) => {
   const bookingsIds = bookings.map((el) => el.tour.id);
   const tour = await Tour.findOne({ slug: req.params.tourSlug });
   const tourIsOver = tour.startDates[0] < Date.now();
-  const booked = bookingsIds.includes(String(tour._id));
 
-  res.locals.tourIsBooked = booked;
+  res.locals.tourIsBooked = bookingsIds.includes(String(tour._id));
+  req.tour = tour;
 
+  next();
+});
+
+exports.checkTourOccupancy = catchAsync(async (req, res, next) => {
+  const tourBookings = await Booking.find({ tour: req.tour._id });
   next();
 });
 
@@ -74,6 +79,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     user: req.body.user,
     tour: req.body.tour,
     price: req.body.price,
+    tourStartDate: req.body.tourStartDate,
   };
 
   await Booking.create(newBooking);
