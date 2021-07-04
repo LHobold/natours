@@ -9,6 +9,7 @@ import { forgotPassword, resetPassword } from './resetPassword';
 import { signUp } from './signUp';
 import { activateAccount } from './confirmEmail';
 import { bookTour } from './stripe';
+import { showAlert } from './alerts';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
@@ -21,6 +22,7 @@ const forgotPasswordForm = document.querySelector('.form-forgot-password');
 const signupForm = document.querySelector('.form-signup');
 const confirmEmail = document.querySelector('.confirm-email');
 const bookBtn = document.getElementById('book-tour');
+const tourDateSelect = document.getElementById('tour-date');
 
 // DELEGATION
 
@@ -126,8 +128,12 @@ if (confirmEmail) {
 if (bookBtn) {
   bookBtn.addEventListener('click', async (e) => {
     const { tourId } = bookBtn.dataset;
+    const selectedTourDate = tourDateSelect.value;
+    if (selectedTourDate === 'select')
+      return showAlert('error', 'You must select a start date!');
+
     e.target.textContent = 'Processing...';
-    await bookTour(tourId);
+    await bookTour(tourId, selectedTourDate);
     // e.target.textContent = 'Book tour';
   });
 }

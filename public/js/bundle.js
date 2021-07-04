@@ -27673,7 +27673,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var bookTour = exports.bookTour = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(tourId) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(tourId, date) {
     var stripe, session;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -27684,7 +27684,7 @@ var bookTour = exports.bookTour = function () {
             // get checkout session
 
             _context.next = 4;
-            return (0, _axios2.default)('/api/v1/bookings/checkout-session/' + tourId);
+            return (0, _axios2.default)('/api/v1/bookings/checkout-session/' + tourId + '/' + date);
 
           case 4:
             session = _context.sent;
@@ -27699,7 +27699,7 @@ var bookTour = exports.bookTour = function () {
             _context.prev = 9;
             _context.t0 = _context['catch'](0);
 
-            (0, _alerts.showAlert)('error', _context.t0);
+            (0, _alerts.showAlert)('error', 'The selected date is full, please try another');
 
           case 12:
           case 'end':
@@ -27709,7 +27709,7 @@ var bookTour = exports.bookTour = function () {
     }, _callee, _this, [[0, 9]]);
   }));
 
-  return function bookTour(_x) {
+  return function bookTour(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -27736,6 +27736,8 @@ var _confirmEmail = require('./confirmEmail');
 
 var _stripe = require('./stripe');
 
+var _alerts = require('./alerts');
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } /* eslint-disable */
 // import 'regenerator-runtime/runtime';
 
@@ -27751,6 +27753,7 @@ var forgotPasswordForm = document.querySelector('.form-forgot-password');
 var signupForm = document.querySelector('.form-signup');
 var confirmEmail = document.querySelector('.confirm-email');
 var bookBtn = document.getElementById('book-tour');
+var tourDateSelect = document.getElementById('tour-date');
 
 // DELEGATION
 
@@ -27915,18 +27918,28 @@ if (confirmEmail) {
 if (bookBtn) {
   bookBtn.addEventListener('click', function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
-      var tourId;
+      var tourId, selectedTourDate;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               tourId = bookBtn.dataset.tourId;
+              selectedTourDate = tourDateSelect.value;
 
-              e.target.textContent = 'Processing...';
-              _context4.next = 4;
-              return (0, _stripe.bookTour)(tourId);
+              if (!(selectedTourDate === 'select')) {
+                _context4.next = 4;
+                break;
+              }
+
+              return _context4.abrupt('return', (0, _alerts.showAlert)('error', 'You must select a start date!'));
 
             case 4:
+
+              e.target.textContent = 'Processing...';
+              _context4.next = 7;
+              return (0, _stripe.bookTour)(tourId, selectedTourDate);
+
+            case 7:
             case 'end':
               return _context4.stop();
           }
@@ -27941,5 +27954,5 @@ if (bookBtn) {
   // e.target.textContent = 'Book tour';
   );
 }
-},{"@babel/polyfill":"..\\..\\node_modules\\@babel\\polyfill\\lib\\index.js","./mapbox":"mapbox.js","./login":"login.js","./updateSettings":"updateSettings.js","./changePassword":"changePassword.js","./resetPassword":"resetPassword.js","./signUp":"signUp.js","./confirmEmail":"confirmEmail.js","./stripe":"stripe.js"}]},{},["index.js"], null)
+},{"@babel/polyfill":"..\\..\\node_modules\\@babel\\polyfill\\lib\\index.js","./mapbox":"mapbox.js","./login":"login.js","./updateSettings":"updateSettings.js","./changePassword":"changePassword.js","./resetPassword":"resetPassword.js","./signUp":"signUp.js","./confirmEmail":"confirmEmail.js","./stripe":"stripe.js","./alerts":"alerts.js"}]},{},["index.js"], null)
 //# sourceMappingURL=/bundle.map

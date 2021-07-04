@@ -103,8 +103,10 @@ block content
         img.cta__img.cta__img--2(src=`/img/tours/${tour.images[1]}`, alt='')
         .cta__content
           if tourIsBooked
-            h2.heading-secondary You already booked this tour!           
-              a.btn.btn--green.span-all-rows(href='/my-tours') Go to booked tours
+            h2.heading-secondary You already booked this tour!        
+            p.cta__text= `Once you completed the tour, you can review it`
+            a(href="/my-tours")   
+              button.btn.btn--green.span-all-rows Go to booked tours
 
           else
             h2.heading-secondary What are you waiting for?
@@ -113,3 +115,11 @@ block content
               button.btn.btn--green.span-all-rows#book-tour(data-tour-id=tour.id) Book tour now!
             else 
               a.btn.btn--green.span-all-rows(href='/login') Log in to book tour
+        if tourDates
+          .box
+            select#tour-date(name="Choose start date") 
+              option(value="select") Select start date 
+                each date in tourDates
+                  option(value=date.date) #{date.formattedDate}
+                
+

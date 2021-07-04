@@ -77,7 +77,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   // Create error if user posts password data, if not, update user document
 
   if (password || confirmPassword)
-    return next(new AppError('You cannot change password on this route'), 400);
+    return next(new AppError('You cannot change password on this route', 400));
 
   const filteredChanges = filterObj(req.body, ...possibleChanges);
   if (req.file) filteredChanges.photo = req.file.filename;
