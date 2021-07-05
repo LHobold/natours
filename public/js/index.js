@@ -10,6 +10,7 @@ import { signUp } from './signUp';
 import { activateAccount } from './confirmEmail';
 import { bookTour } from './stripe';
 import { showAlert } from './alerts';
+import { sendReview } from './reviewTour';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');

@@ -102,12 +102,16 @@ block content
         img.cta__img.cta__img--1(src=`/img/tours/${tour.images[0]}`, alt='')
         img.cta__img.cta__img--2(src=`/img/tours/${tour.images[1]}`, alt='')
         .cta__content
-          if tourIsBooked
+          if tourIsBooked && !tourIsOver
             h2.heading-secondary You already booked this tour!        
             p.cta__text= `Once you completed the tour, you can review it`
             a(href="/my-tours")   
               button.btn.btn--green.span-all-rows Go to booked tours
-
+          else if tourIsBooked && tourIsOver 
+            h2.heading-secondary Congratulations on finishing this tour!        
+            p.cta__text= `You can review the tour clicking on the button.`
+            a(href="/my-tours")   
+              button.btn.btn--green.span-all-rows(data-tour-id=tour.id) Review tour
           else
             h2.heading-secondary What are you waiting for?
             p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
@@ -115,7 +119,7 @@ block content
               button.btn.btn--green.span-all-rows#book-tour(data-tour-id=tour.id) Book tour now!
             else 
               a.btn.btn--green.span-all-rows(href='/login') Log in to book tour
-        if tourDates
+        if tourDates && !tourIsBooked
           .box
             select#tour-date(name="Choose start date") 
               option(value="select") Select start date 

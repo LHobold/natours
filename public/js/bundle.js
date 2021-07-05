@@ -27713,6 +27713,76 @@ var bookTour = exports.bookTour = function () {
     return _ref.apply(this, arguments);
   };
 }();
+},{"axios":"..\\..\\node_modules\\axios\\index.js","./alerts":"alerts.js"}],"reviewTour.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.sendReview = undefined;
+var _this = undefined;
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _alerts = require('./alerts');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var sendReview = exports.sendReview = function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(review, rating, user, tour) {
+    var res;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return (0, _axios2.default)({
+              method: 'POST',
+              url: '/api/v1/reviews/',
+              data: {
+                review: review,
+                rating: rating,
+                user: user,
+                tour: tour
+              }
+            });
+
+          case 3:
+            res = _context.sent;
+
+
+            if (res.data.status === 'sucess') {
+              (0, _alerts.showAlert)('success', 'Password changed!');
+              window.setTimeout(function () {
+                location.assign('/me');
+              }, 1000);
+            }
+            _context.next = 10;
+            break;
+
+          case 7:
+            _context.prev = 7;
+            _context.t0 = _context['catch'](0);
+
+            (0, _alerts.showAlert)('error', _context.t0.response.data.message);
+
+          case 10:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, _this, [[0, 7]]);
+  }));
+
+  return function sendReview(_x, _x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}();
 },{"axios":"..\\..\\node_modules\\axios\\index.js","./alerts":"alerts.js"}],"index.js":[function(require,module,exports) {
 'use strict';
 
@@ -27737,6 +27807,8 @@ var _confirmEmail = require('./confirmEmail');
 var _stripe = require('./stripe');
 
 var _alerts = require('./alerts');
+
+var _reviewTour = require('./reviewTour');
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } /* eslint-disable */
 // import 'regenerator-runtime/runtime';
@@ -27954,5 +28026,5 @@ if (bookBtn) {
   // e.target.textContent = 'Book tour';
   );
 }
-},{"@babel/polyfill":"..\\..\\node_modules\\@babel\\polyfill\\lib\\index.js","./mapbox":"mapbox.js","./login":"login.js","./updateSettings":"updateSettings.js","./changePassword":"changePassword.js","./resetPassword":"resetPassword.js","./signUp":"signUp.js","./confirmEmail":"confirmEmail.js","./stripe":"stripe.js","./alerts":"alerts.js"}]},{},["index.js"], null)
+},{"@babel/polyfill":"..\\..\\node_modules\\@babel\\polyfill\\lib\\index.js","./mapbox":"mapbox.js","./login":"login.js","./updateSettings":"updateSettings.js","./changePassword":"changePassword.js","./resetPassword":"resetPassword.js","./signUp":"signUp.js","./confirmEmail":"confirmEmail.js","./stripe":"stripe.js","./alerts":"alerts.js","./reviewTour":"reviewTour.js"}]},{},["index.js"], null)
 //# sourceMappingURL=/bundle.map

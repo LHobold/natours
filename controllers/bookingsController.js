@@ -38,24 +38,32 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
 exports.tourIsBooked = catchAsync(async (req, res, next) => {
   const user = req.user;
-  const tour = await Tour.findOne({ slug: req.params.tourSlug });
-  req.tour = tour;
   if (!user) return next();
+  // Find tour with the slug
+  const tour = await Tour.findOne({ slug: req.params.tourSlug });
 
-  const bookings = await Booking.find({ user: user.id });
-  const bookingsIds = bookings.map((el) => el.tour.id);
-  const tourIsOver = tour.startDates[0] < Date.now();
-  res.locals.tourIsBooked = bookingsIds.includes(String(tour._id));
+  // Find user bookings and check if it has been booked
+  const userBookings = await Booking.find({ user: user.id });
+  const userBookingsIds = userBookings.map((el) => el.tour.id);
+  const tourBookedDate = new Date(
+    userBookings
+      .filter((el) => el.tour.id === tour.id)
+      .map((el) => el.tourStartDate)[0]
+  ).getTime();
 
-  const tourDates = [];
-  tour.startDates.forEach((el) => {
-    const date = {
-      date: new Date(el).getTime(),
-      formattedDate: formatDate(el),
-    };
-    tourDates.push(date);
-  });
+  const tourIsOver = tourBookedDate < Date.now();
+
+  const tourDates = tour.startDates.map(
+    (el) =>
+      new Object({
+        date: new Date(el).getTime(),
+        formattedDate: formatDate(el),
+      })
+  );
+
   res.locals.tourDates = tourDates;
+  res.locals.tourIsBooked = userBookingsIds.includes(String(tour._id));
+  res.locals.tourIsOver = tourIsOver;
 
   next();
 });
@@ -69,7 +77,7 @@ exports.checkTourOccupancy = catchAsync(async (req, res, next) => {
     {
       $group: {
         _id: '$tourStartDate',
-        occupancy: { $sum: 5 },
+        occupancy: { $sum: 1 },
       },
     },
     {
@@ -113,7 +121,7 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
     tour,
     user,
     price,
-    tourStartDate: new Date(Number(tourDate)).toISOString(),
+    tourStartDate: new Date(Number(tourDate)),
   });
   res.redirect(`${req.protocol}://${req.get('host')}/`);
 });

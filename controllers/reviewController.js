@@ -3,6 +3,7 @@ const Tour = require('../model/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 const AppError = require('../utils/appError');
+const Bookings = require('../model/bookingModel');
 
 exports.getAllReviews = factory.getAll(Review);
 
@@ -12,6 +13,19 @@ exports.createReview = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.tourId);
   if (!tour)
     return next(new AppError('No tour found with the specified ID', 404));
+  // Check if user has booked tour
+  const userBookings = await Bookings.find({ user: req.user.id });
+  const tourBookedDate = new Date(
+    userBookings
+      .filter((el) => el.tour.id === tour.id)
+      .map((el) => el.tourStartDate)[0]
+  ).getTime();
+
+  if (tourBookedDate < Date.now())
+    return next(
+      new AppError('You can only review a tour after finishing it!', 400)
+    );
+
   const newReview = await Review.create({
     review: req.body.review,
     rating: req.body.rating,

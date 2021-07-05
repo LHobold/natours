@@ -1419,3 +1419,11 @@ body {
 .box select option {
   padding: 30px;
 }
+
+.btn-next {
+  left: 70%;
+}
+
+.btn-prev {
+  left: 10%;
+}

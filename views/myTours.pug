@@ -55,3 +55,15 @@ block content
                     | 
                     span.card__footer-text= `rating (${tour.ratingsQuantity})`
                   a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details
+                  
+      //- if prevPage
+      //-   a(href=`?page=${prevPage}`) Page #{prevPage}
+  
+      //- if nextPage
+      //-   a(href=`?page=${nextPage}`) Page #{nextPage}
+
+      if prevPage
+        a.btn.btn--green.btn--small.btn-prev(href=`?page=${prevPage}`) Page #{prevPage}
+  
+      if nextPage
+        a.btn.btn--green.btn--small.btn-next(href=`?page=${nextPage}`) Page #{nextPage}

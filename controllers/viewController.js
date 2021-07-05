@@ -92,7 +92,8 @@ exports.getForgotPasswordPage = (req, res) => {
   });
 };
 
-exports.getSignupPage = (req, res) => {
+exports.getSignupPage = (req, res, next) => {
+  if (req.user) return next(new AppError('You are already logged in!', 400));
   res.status(200).render('signup', {
     title: 'Join the Natours family',
   });
@@ -117,11 +118,26 @@ exports.getConfirmPage = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyBookings = catchAsync(async (req, res, next) => {
+  const { page } = req.query;
+  const options = {
+    page: parseInt(page, 10) || 1,
+    limit: 6,
+  };
+
   const user = req.user;
   const bookings = await Booking.find({ user: user.id });
   const tourIDs = bookings.map((el) => el.tour);
-  const tours = await Tour.find({ _id: { $in: tourIDs } });
-  res.status(200).render('myTours', { title: 'My booked tours', tours });
+
+  const results = await Tour.paginate({ _id: { $in: tourIDs } }, options);
+  if (page > results.totalPages)
+    return next(new AppError('No more pages with results!', 400));
+
+  res.status(200).render('myTours', {
+    title: 'My booked tours',
+    tours: results.docs,
+    prevPage: results.prevPage,
+    nextPage: results.nextPage,
+  });
 });
 
 exports.getMyReviews = catchAsync(async (req, res, next) => {
