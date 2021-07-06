@@ -81,7 +81,6 @@ exports.tourIsBooked = catchAsync(async (req, res, next) => {
 
 exports.checkTourOccupancy = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.tourId);
-  console.log('$CHECKTOUROCCUPANCYTOUR$', tour);
   const tourBookings = await Booking.aggregate([
     {
       $match: { tour: tour._id },
@@ -118,7 +117,6 @@ exports.checkTourOccupancy = catchAsync(async (req, res, next) => {
     .map((el) => new Date(el.date).getTime());
 
   const bookedDate = Number(req.params.tourDate);
-  console.log('$CHECKTOUROCCUPANCYTOURDATE$', bookedDate, tourBookings);
 
   if (tourBookings.length !== 0 && fullDates.includes(bookedDate))
     return next(new AppError('Selected date is full, try another', 400));
@@ -143,9 +141,11 @@ const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id.split('-')[0];
   const tourDate = session.client_reference_id.split('-')[1];
   const user = (await User.findOne({ email: session.customer_email })).id;
+  console.log('##', tour, tourDate, user);
+  console.log('$$', session, session.line_items);
+
   const price = session.line_items[0].amount / 100;
 
-  console.log('##', tour, tourDate, user, price);
   await Booking.create({
     tour,
     user,
