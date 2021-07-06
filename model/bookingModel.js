@@ -12,7 +12,7 @@ const bookingSchema = new mongoose.Schema({
     requried: [true, 'A booking must belong to an user!'],
   },
   tourStartDate: {
-    type: String,
+    type: Date,
     required: [true, 'The booking must be from one of the tour dates'],
   },
   price: {
