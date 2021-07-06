@@ -145,7 +145,15 @@ const createBookingCheckout = async (session) => {
   const user = (await User.findOne({ email: session.customer_email })).id;
   const price = session.amount_total / 100;
   if (session.client_reference_id.includes('/'))
-    return res.status(200).json({ received: true });
+    return await Booking.create({
+      tour: session.client_reference_id.split('/')[0],
+      user,
+      price,
+      tourStartDate: new Date(
+        Number(session.client_reference_id.split('/')[1])
+      ).getTime(),
+    });
+
   await Booking.create({
     tour,
     user,
