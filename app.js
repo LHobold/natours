@@ -12,6 +12,7 @@ const tourRouter = require('./routes/tourRoutes');
 const usersRouter = require('./routes/userRoutes');
 const reviewsRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingsController = require('./controllers/bookingsController');
 const viewRouter = require('./routes/viewRoutes');
 const AppError = require('./utils/appError');
 const cors = require('cors');
@@ -46,6 +47,14 @@ const limiter = rateLimit({
 });
 
 app.use('/api', limiter);
+// Webhook checkout -> needs to be here because the response needs to be in RAW form, and not in JSON.
+app.post(
+  '/webhook-checkout',
+  express.raw({
+    type: 'application/json',
+  }),
+  bookingsController.webhookCheckout
+);
 
 // BODY PARSER, READING DATA FROM BODY INTO REQ.BODY
 app.use(
