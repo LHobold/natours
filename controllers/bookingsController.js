@@ -149,7 +149,7 @@ const createBookingCheckout = async (session) => {
     tour,
     user,
     price,
-    tourStartDate: new Date(Number(tourDate)),
+    tourStartDate: new Date(Number(tourDate)).getTime(),
   });
 };
 
