@@ -156,3 +156,10 @@ exports.getReviewPage = catchAsync(async (req, res, next) => {
     tour: req.tour,
   });
 });
+
+exports.alerts = (req, res, next) => {
+  const { alert } = req.query;
+  if (alert === 'booking') {
+    res.locals.alert = 'Your booking was sucessfull ';
+  }
+};
