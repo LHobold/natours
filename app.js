@@ -14,6 +14,7 @@ const reviewsRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const AppError = require('./utils/appError');
+const cors = require('cors');
 const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
@@ -22,7 +23,10 @@ app.enable('trust proxy');
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 ///// GLOBAL MIDDLEWARES //////
+// IMPLEMENT CORS
+app.use(cors());
 
+app.options('*', cors());
 // SET SECURITY HTTP HEADERS
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
