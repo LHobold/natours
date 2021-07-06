@@ -40,7 +40,11 @@ exports.tourIsBooked = catchAsync(async (req, res, next) => {
   const user = req.user;
   if (!user) return next();
   // Find tour with the slug
+
+  if (!req.params.tourSlug) return next(new AppError('No tour found!', 400));
+
   const tour = await Tour.findOne({ slug: req.params.tourSlug });
+  if (!tour) return next(new AppError('No tour found!', 400));
 
   // Find user bookings and check if it has been booked
   const userBookings = await Booking.find({ user: user.id });
@@ -51,6 +55,7 @@ exports.tourIsBooked = catchAsync(async (req, res, next) => {
       .map((el) => el.tourStartDate)[0]
   ).getTime();
 
+  const tourIsBooked = userBookingsIds.includes(String(tour._id));
   const tourIsOver = tourBookedDate < Date.now();
 
   const tourDates = tour.startDates.map(
@@ -60,9 +65,12 @@ exports.tourIsBooked = catchAsync(async (req, res, next) => {
         formattedDate: formatDate(el),
       })
   );
+  req.tour = tour;
+  req.tourIsBooked = tourIsBooked;
+  req.tourIsOver = tourIsOver;
 
   res.locals.tourDates = tourDates;
-  res.locals.tourIsBooked = userBookingsIds.includes(String(tour._id));
+  res.locals.tourIsBooked = tourIsBooked;
   res.locals.tourIsOver = tourIsOver;
 
   next();

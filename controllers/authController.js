@@ -56,6 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
+  if (req.user) return next(new AppError('You are already logged in', 400));
   const { email, password } = req.body;
 
   // Check if e-mail and password exist

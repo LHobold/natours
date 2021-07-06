@@ -48,7 +48,8 @@ exports.getTourDetails = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.loginForm = catchAsync(async (req, res) => {
+exports.loginForm = catchAsync(async (req, res, next) => {
+  if (req.user) return next(new AppError('You are already logged in', 400));
   res
     .status(200)
     .set(
@@ -145,4 +146,13 @@ exports.getMyReviews = catchAsync(async (req, res, next) => {
   const reviews = await Review.find({ user: user.id });
 
   res.status(200).render('myReviews', { title: 'My reviews', reviews });
+});
+
+exports.getReviewPage = catchAsync(async (req, res, next) => {
+  if (!req.tourIsBooked && !req.tourIsOver)
+    return next(new AppError('You cannot review this tour!', 400));
+  res.status(200).render('review', {
+    title: `Review ${req.tour.name}`,
+    tour: req.tour,
+  });
 });

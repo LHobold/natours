@@ -110,8 +110,8 @@ block content
           else if tourIsBooked && tourIsOver 
             h2.heading-secondary Congratulations on finishing this tour!        
             p.cta__text= `You can review the tour clicking on the button.`
-            a(href="/my-tours")   
-              button.btn.btn--green.span-all-rows(data-tour-id=tour.id) Review tour
+            a(href=`/sendReview/tour/${tour.slug}`)   
+              button.btn.btn--green.span-all-rows Review tour
           else
             h2.heading-secondary What are you waiting for?
             p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`

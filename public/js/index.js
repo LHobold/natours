@@ -21,9 +21,11 @@ const changePasswordForm = document.querySelector('.form-user-settings');
 const resetPasswordForm = document.querySelector('.form-reset-password');
 const forgotPasswordForm = document.querySelector('.form-forgot-password');
 const signupForm = document.querySelector('.form-signup');
+const sendReviewForm = document.querySelector('.form-review');
 const confirmEmail = document.querySelector('.confirm-email');
 const bookBtn = document.getElementById('book-tour');
 const tourDateSelect = document.getElementById('tour-date');
+const reviewBtn = document.getElementById('review-tour');
 
 // DELEGATION
 
@@ -136,5 +138,19 @@ if (bookBtn) {
     e.target.textContent = 'Processing...';
     await bookTour(tourId, selectedTourDate);
     // e.target.textContent = 'Book tour';
+  });
+}
+
+if (sendReviewForm) {
+  sendReviewForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const review = document.getElementById('review').value;
+    const rating = document.getElementById('rating').value;
+    const { tourId } = reviewBtn.dataset;
+    console.log('$', tourId);
+
+    reviewBtn.textContent = 'Processing...';
+    await sendReview(review, rating, tourId);
+    reviewBtn.textContent = 'send review';
   });
 }

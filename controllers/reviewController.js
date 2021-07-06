@@ -10,7 +10,10 @@ exports.getAllReviews = factory.getAll(Review);
 exports.createReview = catchAsync(async (req, res, next) => {
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user.id;
-  const tour = await Tour.findById(req.params.tourId);
+  console.log('#', req.body.tour);
+  const tour = req.body.tour
+    ? await Tour.findById(req.body.tour)
+    : await Tour.findById(req.params.tourId);
   if (!tour)
     return next(new AppError('No tour found with the specified ID', 404));
   // Check if user has booked tour
@@ -21,7 +24,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
       .map((el) => el.tourStartDate)[0]
   ).getTime();
 
-  if (tourBookedDate < Date.now())
+  if (tourBookedDate > Date.now())
     return next(
       new AppError('You can only review a tour after finishing it!', 400)
     );

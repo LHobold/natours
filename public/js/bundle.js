@@ -27733,7 +27733,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var sendReview = exports.sendReview = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(review, rating, user, tour) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(review, rating, tour) {
     var res;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -27747,7 +27747,6 @@ var sendReview = exports.sendReview = function () {
               data: {
                 review: review,
                 rating: rating,
-                user: user,
                 tour: tour
               }
             });
@@ -27757,21 +27756,29 @@ var sendReview = exports.sendReview = function () {
 
 
             if (res.data.status === 'sucess') {
-              (0, _alerts.showAlert)('success', 'Password changed!');
+              (0, _alerts.showAlert)('success', 'Review sent, thank you!');
               window.setTimeout(function () {
-                location.assign('/me');
-              }, 1000);
+                location.assign('/');
+              }, 2000);
             }
-            _context.next = 10;
+            _context.next = 12;
             break;
 
           case 7:
             _context.prev = 7;
             _context.t0 = _context['catch'](0);
 
+            if (!_context.t0.response.data.message.startsWith('Duplicate')) {
+              _context.next = 11;
+              break;
+            }
+
+            return _context.abrupt('return', (0, _alerts.showAlert)('error', 'You already reviewed this tour!'));
+
+          case 11:
             (0, _alerts.showAlert)('error', _context.t0.response.data.message);
 
-          case 10:
+          case 12:
           case 'end':
             return _context.stop();
         }
@@ -27779,7 +27786,7 @@ var sendReview = exports.sendReview = function () {
     }, _callee, _this, [[0, 7]]);
   }));
 
-  return function sendReview(_x, _x2, _x3, _x4) {
+  return function sendReview(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -27823,9 +27830,11 @@ var changePasswordForm = document.querySelector('.form-user-settings');
 var resetPasswordForm = document.querySelector('.form-reset-password');
 var forgotPasswordForm = document.querySelector('.form-forgot-password');
 var signupForm = document.querySelector('.form-signup');
+var sendReviewForm = document.querySelector('.form-review');
 var confirmEmail = document.querySelector('.confirm-email');
 var bookBtn = document.getElementById('book-tour');
 var tourDateSelect = document.getElementById('tour-date');
+var reviewBtn = document.getElementById('review-tour');
 
 // DELEGATION
 
@@ -28025,6 +28034,42 @@ if (bookBtn) {
   }()
   // e.target.textContent = 'Book tour';
   );
+}
+
+if (sendReviewForm) {
+  sendReviewForm.addEventListener('submit', function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(e) {
+      var review, rating, tourId;
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              e.preventDefault();
+              review = document.getElementById('review').value;
+              rating = document.getElementById('rating').value;
+              tourId = reviewBtn.dataset.tourId;
+
+              console.log('$', tourId);
+
+              reviewBtn.textContent = 'Processing...';
+              _context5.next = 8;
+              return (0, _reviewTour.sendReview)(review, rating, tourId);
+
+            case 8:
+              reviewBtn.textContent = 'send review';
+
+            case 9:
+            case 'end':
+              return _context5.stop();
+          }
+        }
+      }, _callee5, _this);
+    }));
+
+    return function (_x5) {
+      return _ref5.apply(this, arguments);
+    };
+  }());
 }
 },{"@babel/polyfill":"..\\..\\node_modules\\@babel\\polyfill\\lib\\index.js","./mapbox":"mapbox.js","./login":"login.js","./updateSettings":"updateSettings.js","./changePassword":"changePassword.js","./resetPassword":"resetPassword.js","./signUp":"signUp.js","./confirmEmail":"confirmEmail.js","./stripe":"stripe.js","./alerts":"alerts.js","./reviewTour":"reviewTour.js"}]},{},["index.js"], null)
 //# sourceMappingURL=/bundle.map

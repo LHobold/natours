@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { showAlert } from './alerts';
 
-export const sendReview = async (review, rating, user, tour) => {
+export const sendReview = async (review, rating, tour) => {
   try {
     const res = await axios({
       method: 'POST',
@@ -9,18 +9,19 @@ export const sendReview = async (review, rating, user, tour) => {
       data: {
         review,
         rating,
-        user,
         tour,
       },
     });
 
     if (res.data.status === 'sucess') {
-      showAlert('success', 'Password changed!');
+      showAlert('success', 'Review sent, thank you!');
       window.setTimeout(() => {
-        location.assign('/me');
-      }, 1000);
+        location.assign('/');
+      }, 2000);
     }
   } catch (err) {
+    if (err.response.data.message.startsWith('Duplicate'))
+      return showAlert('error', 'You already reviewed this tour!');
     showAlert('error', err.response.data.message);
   }
 };
