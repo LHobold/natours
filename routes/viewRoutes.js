@@ -5,6 +5,8 @@ const bookingsController = require('../controllers/bookingsController');
 
 const router = express.Router();
 
+router.use(viewController.alerts);
+
 router.get('/resetPassword/:token', viewController.getResetPasswordPage);
 router.get('/me', authController.protect, viewController.viewAccount);
 router.get('/confirm/:token', viewController.getConfirmPage);

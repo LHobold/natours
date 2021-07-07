@@ -27145,6 +27145,8 @@ var hideAlert = exports.hideAlert = function hideAlert() {
 };
 
 var showAlert = exports.showAlert = function showAlert(type, message) {
+  var time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
+
   hideAlert();
   var markup = '<div class="alert alert--' + type + '">' + message + '</div>"';
   var body = document.querySelector('body');
@@ -27152,7 +27154,7 @@ var showAlert = exports.showAlert = function showAlert(type, message) {
 
   window.setTimeout(function () {
     hideAlert();
-  }, 5000);
+  }, time * 1000);
 };
 },{}],"login.js":[function(require,module,exports) {
 'use strict';
@@ -27835,6 +27837,7 @@ var confirmEmail = document.querySelector('.confirm-email');
 var bookBtn = document.getElementById('book-tour');
 var tourDateSelect = document.getElementById('tour-date');
 var reviewBtn = document.getElementById('review-tour');
+var alert = document.body.dataset.alert;
 
 // DELEGATION
 
@@ -28070,6 +28073,10 @@ if (sendReviewForm) {
       return _ref5.apply(this, arguments);
     };
   }());
+}
+
+if (alert) {
+  if (alert.startsWith('Your booking')) return (0, _alerts.showAlert)('success', alert, 10);
 }
 },{"@babel/polyfill":"..\\..\\node_modules\\@babel\\polyfill\\lib\\index.js","./mapbox":"mapbox.js","./login":"login.js","./updateSettings":"updateSettings.js","./changePassword":"changePassword.js","./resetPassword":"resetPassword.js","./signUp":"signUp.js","./confirmEmail":"confirmEmail.js","./stripe":"stripe.js","./alerts":"alerts.js","./reviewTour":"reviewTour.js"}]},{},["index.js"], null)
 //# sourceMappingURL=/bundle.map

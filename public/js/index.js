@@ -26,6 +26,7 @@ const confirmEmail = document.querySelector('.confirm-email');
 const bookBtn = document.getElementById('book-tour');
 const tourDateSelect = document.getElementById('tour-date');
 const reviewBtn = document.getElementById('review-tour');
+const { alert } = document.body.dataset;
 
 // DELEGATION
 
@@ -153,4 +154,8 @@ if (sendReviewForm) {
     await sendReview(review, rating, tourId);
     reviewBtn.textContent = 'send review';
   });
+}
+
+if (alert) {
+  if (alert.startsWith('Your booking')) return showAlert('success', alert, 10);
 }
