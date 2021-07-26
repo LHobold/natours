@@ -63,8 +63,9 @@ if (changeSettingsForm) {
     form.append('photo', document.getElementById('photo').files[0]);
 
     await updateSettings(form);
+    console.log(form);
     document.querySelector('.btn--save-settings').textContent = 'Save settings';
-    location.reload();
+    // location.reload();
   });
 }
 
@@ -148,7 +149,6 @@ if (sendReviewForm) {
     const review = document.getElementById('review').value;
     const rating = document.getElementById('rating').value;
     const { tourId } = reviewBtn.dataset;
-    console.log('$', tourId);
 
     reviewBtn.textContent = 'Processing...';
     await sendReview(review, rating, tourId);

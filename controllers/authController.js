@@ -66,13 +66,14 @@ exports.login = catchAsync(async (req, res, next) => {
   // Check if the user exist && password is correct
   const user = await User.findOne({ email }).select('+password +active');
 
+  if (!user || !(await user.correctPassword(password, user.password)))
+    return next(new AppError('Incorrect email or password', 401));
+
   if (user.confirmEmailToken)
     return next(new AppError('Please confirm your account in your email!'));
 
   const sendUser = await User.findOne({ email });
 
-  if (!user || !(await user.correctPassword(password, user.password)))
-    return next(new AppError('Incorrect email or password', 401));
   // If everything is ok, send token to client
 
   createSendToken(sendUser, 200, res, req);

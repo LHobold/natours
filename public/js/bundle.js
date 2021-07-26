@@ -27884,8 +27884,9 @@ if (changeSettingsForm) {
               return (0, _updateSettings.updateSettings)(form);
 
             case 8:
+              console.log(form);
               document.querySelector('.btn--save-settings').textContent = 'Save settings';
-              location.reload();
+              // location.reload();
 
             case 10:
             case 'end':
@@ -28052,16 +28053,15 @@ if (sendReviewForm) {
               rating = document.getElementById('rating').value;
               tourId = reviewBtn.dataset.tourId;
 
-              console.log('$', tourId);
 
               reviewBtn.textContent = 'Processing...';
-              _context5.next = 8;
+              _context5.next = 7;
               return (0, _reviewTour.sendReview)(review, rating, tourId);
 
-            case 8:
+            case 7:
               reviewBtn.textContent = 'send review';
 
-            case 9:
+            case 8:
             case 'end':
               return _context5.stop();
           }
