@@ -1451,8 +1451,10 @@ body {
 
 .btn-next {
   left: 70%;
+  top: 2%;
 }
 
 .btn-prev {
   left: 10%;
+  top: 2%;
 }
