@@ -27,8 +27,19 @@ const bookBtn = document.getElementById('book-tour');
 const tourDateSelect = document.getElementById('tour-date');
 const reviewBtn = document.getElementById('review-tour');
 const { alert } = document.body.dataset;
+const searchForm = document.querySelector('.nav__search');
+const searchInput = document.querySelector('.nav__search-input');
 
 // DELEGATION
+
+if (searchForm) {
+  searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const searchQuery = searchInput.value;
+    window.location.href = `/?search=${searchQuery}`;
+  });
+}
 
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);

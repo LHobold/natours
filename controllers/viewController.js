@@ -18,9 +18,15 @@ exports.getOverview = catchAsync(async (req, res, next) => {
     tours = await Tour.find({ _id: { $nin: bookedToursIds } });
   }
 
+  if (req.query.search) {
+    console.log(req.query.search);
+    tours = await Tour.find({ $text: { $search: `${req.query.search}` } });
+  }
+
   // 3) Render template using tour data
 
   res.status(200).render('overview', {
+    overview: true,
     tours,
     title: 'Exciting tours for adventurous people',
   });

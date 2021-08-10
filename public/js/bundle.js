@@ -26169,30 +26169,34 @@ util.inherits(InflateRaw, Zlib);
 util.inherits(Unzip, Zlib);
 },{"buffer":"..\\..\\node_modules\\buffer\\index.js","stream":"..\\..\\node_modules\\stream-browserify\\index.js","./binding":"..\\..\\node_modules\\browserify-zlib\\lib\\binding.js","util":"..\\..\\node_modules\\util\\util.js","assert":"..\\..\\node_modules\\assert\\assert.js","process":"..\\..\\node_modules\\process\\browser.js"}],"..\\..\\node_modules\\axios\\package.json":[function(require,module,exports) {
 module.exports = {
-  "_from": "axios",
+  "_args": [
+    [
+      "axios@0.21.1",
+      "C:\\Users\\lucas\\Desktop\\Proj\\Natours\\natours"
+    ]
+  ],
+  "_from": "axios@0.21.1",
   "_id": "axios@0.21.1",
   "_inBundle": false,
   "_integrity": "sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==",
   "_location": "/axios",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "axios",
+    "raw": "axios@0.21.1",
     "name": "axios",
     "escapedName": "axios",
-    "rawSpec": "",
+    "rawSpec": "0.21.1",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "0.21.1"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz",
-  "_shasum": "22563481962f4d6bde9a76d516ef0e5d3c09b2b8",
-  "_spec": "axios",
-  "_where": "C:\\Users\\lucas\\Desktop\\complete-node-bootcamp-master\\4-natours\\starter",
+  "_spec": "0.21.1",
+  "_where": "C:\\Users\\lucas\\Desktop\\Proj\\Natours\\natours",
   "author": {
     "name": "Matt Zabriskie"
   },
@@ -26202,7 +26206,6 @@ module.exports = {
   "bugs": {
     "url": "https://github.com/axios/axios/issues"
   },
-  "bundleDependencies": false,
   "bundlesize": [
     {
       "path": "./dist/axios.min.js",
@@ -26212,7 +26215,6 @@ module.exports = {
   "dependencies": {
     "follow-redirects": "^1.10.0"
   },
-  "deprecated": false,
   "description": "Promise based HTTP client for the browser and node.js",
   "devDependencies": {
     "bundlesize": "^0.17.0",
@@ -27839,7 +27841,19 @@ var tourDateSelect = document.getElementById('tour-date');
 var reviewBtn = document.getElementById('review-tour');
 var alert = document.body.dataset.alert;
 
+var searchForm = document.querySelector('.nav__search');
+var searchInput = document.querySelector('.nav__search-input');
+
 // DELEGATION
+
+if (searchForm) {
+  searchForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var searchQuery = searchInput.value;
+    window.location.href = '/?search=' + searchQuery;
+  });
+}
 
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
