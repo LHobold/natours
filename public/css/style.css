@@ -832,7 +832,7 @@ body {
   background-color: #fff;
   max-width: 140rem;
   margin: 0 auto;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   border-radius: 3px;
   overflow: hidden;
   -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.07);
@@ -1133,7 +1133,7 @@ body {
 
 .card-container-account {
   max-width: 120rem;
-  margin-left: 3rem;
+  margin: 0 3rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 7rem;
@@ -1157,6 +1157,7 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
 }
+
 .card__header {
   position: relative;
 }
